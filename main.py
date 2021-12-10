@@ -2,34 +2,64 @@ import pygame
 import math
 import random
 
+'''
+VisualSort Class
 
+This class contains the sorting algorithms as well as the drawing for pygame
+'''
 class VisualSort:
+    '''
+    Initialisation process
+
+    size: number of elements to be sorted
+    surface: pygame surface
+    speed: delay (in miliseconds) between comparisons
+    '''
     def __init__(self, size, surface, speed):
+        # save input variable
         self.size = size
         self.surface = surface
         self.sleep_duration = speed
-        self.array = [Element(1)] * size
 
-        for i in range(self.size):
-            self.array[i] = Element(i + 1)
+        # create array to be sorted
+        self.array = [Element(i+1) for i in range(size)]
 
+        # shuffle the array
         self.reset()
 
+    '''
+    Debugging sorting algorithm by printing the elements in the array
+    '''
     def __str__(self):
-        str_lst = [None] * (self.size + 2)
+        str_lst = [None] * (self.size + 2)  # "[" + "number of elements" + "]" = self.size + 2
+        
+        # first string = [
         str_lst[0] = '['
+
+        # element 1...n-1 = 'number' + ','
         for i in range(self.size - 1):
             str_lst[i + 1] = str(self.array[i].val) + ', '
+        
+        # last element = 'number'
         str_lst[self.size] = str(self.array[self.size - 1].val)
+
+        # last string = ]
         str_lst[self.size + 1] = ']'
+
         return ''.join(str_lst)
 
+    '''
+    sorting self.array using quicksort
+    '''
     def quicksort(self):
-        my_array = self.array
-        self.quicksort_aux(my_array, 0, self.size-1)
+        self.quicksort_aux(self.array, 0, self.size-1)
         self.draw()
 
+    '''
+    auxiliary function for quicksort
+    '''
     def quicksort_aux(self, lst, lo, hi):
+        # if pointers contain 0 
         if lo >= hi:
             if lo == hi:
                 lst[lo].final = True
@@ -101,6 +131,21 @@ class VisualSort:
                     break
                 self.my_sleep()
 
+    def bubble_sort(self):
+        pass
+
+    def merge_sort(self):
+        pass
+
+    def radix_sort(self):
+        pass
+
+    def cocktail_shaker_sort(self):
+        pass
+
+    def bogo_sort(self):
+        pass
+
     def reset(self):
         random.shuffle(self.array)
         for i in range(self.size):
@@ -170,7 +215,7 @@ screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('Sorting Visualised')
 
 no_elem = 15
-my_time = 200
+my_time = 50
 x = VisualSort(no_elem, screen, my_time)
 
 running = True
