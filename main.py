@@ -16,7 +16,7 @@ class VisualSort:
     speed: delay (in miliseconds) between comparisons
     unit_test: used for unit testing
     '''
-    def __init__(self, size, surface, speed, unit_test=False):
+    def __init__(self, surface, size=15, speed=200, unit_test=False):
         # save input variable
         self.size = size
         self.surface = surface
@@ -55,7 +55,8 @@ class VisualSort:
     '''
     def quicksort(self):
         self.quicksort_aux(self.array, 0, self.size-1)
-        self.draw()
+        if not self.unit_test:
+            self.draw()
 
     '''
     auxiliary function for quicksort
@@ -132,7 +133,9 @@ class VisualSort:
             my_array[i].selected = False
             if not self.unit_test:
                 self.my_sleep()
-        self.draw()
+        
+        if not self.unit_test:
+            self.draw()
 
     '''
     sorting self.array using insertion_sort
@@ -166,25 +169,97 @@ class VisualSort:
         for i in range(self.size):
             self.array[i].selected = False
             self.array[i].final = True
-        self.draw()
+        
+        if not self.unit_test:
+            self.draw()
 
     '''
     sorting self.array using bubble_sort
     '''
     def bubble_sort(self):
-        pass
+        lst = self.array
+        for i in range(self.size-1):
+            for j in range(self.size-i-1):
+                lst[j].selected = True
+                lst[j+1].selected = True
+                if not self.unit_test:
+                    self.my_sleep()
+                
+                # if element on left is greater than element on right, swap them
+                if lst[j] > lst[j+1]:
+                    lst[j], lst[j+1] = lst[j+1], lst[j]
+                lst[j].selected = False
+                lst[j+1].selected = False
+                if not self.unit_test:
+                    self.my_sleep()
+            
+            # final element is in the correct place
+            lst[j+1].final=True
+            if not self.unit_test:
+                self.my_sleep()
+        
+        lst[0].final = True
+        if not self.unit_test:
+            self.draw()
 
+    '''
+    sorting self.array using merge_sort
+    '''
     def merge_sort(self):
-        pass
+        self.merge_sort_aux(self.array, 0, self.size)
+        if not self.unit_test:
+            self.draw()
+    
+    '''
+    auxialiry function for merge sort
+    '''
+    def merge_sort_aux(self, lst, lo, hi):
+        # base case --> lst[lo..hi] contains 0 or 1 element (lst[lo..hi] is sorted)
+        if lo >= (hi-1):
+            return
 
-    def radix_sort(self):
-        pass
+        # find the midpoint of the lst to split
+        mid = (lo+hi)//2
+        
+        # sort left and right list
+        self.merge_sort_aux(lst, lo, mid)
+        self.merge_sort_aux(lst, mid, hi)
 
-    def cocktail_shaker_sort(self):
-        pass
+        # merge the sorted list
+        self.merge(lst, lo, mid, hi)
+    
+    '''
+    in-place merging of 2 sorted list
 
-    def bogo_sort(self):
-        pass
+    the merged list is placed on the left hand side of both lists
+    '''
+    def merge(self, lst, lo, mid, hi):
+        ptr1 = lo       # points to the first element in the first list
+        ptr2 = mid      # points to the first element in the second list
+        while ptr1 < mid and ptr2 < hi:
+            tmp1_select = lst[ptr1]
+            tmp2_select = lst[ptr2]
+            tmp1_select.selected = True
+            tmp2_select.selected = True
+            if not self.unit_test:
+                self.my_sleep()
+            
+            # if lst[ptr1] is at the correct position, increment ptr1 to add to merged list
+            if lst[ptr1] < lst[ptr2]:
+                ptr1 += 1
+            # if lst[ptr2] needs to merge with the merged list
+            else:
+                temp = lst[ptr2]                    # temporarily save lst[ptr2]
+                lst[ptr1+1:mid+1] = lst[ptr1:mid]   # shift contents in first list by 1 place
+                lst[ptr1] = temp                    # readd lst[ptr2]
+                ptr1 += 1                           # increment ptr1 and mid as list is shifted by 1 place
+                mid += 1
+                ptr2 += 1                           # increment ptr2 as element is added to merged list
+            
+            tmp1_select.selected = False
+            tmp2_select.selected = False
+            if not self.unit_test:
+                self.my_sleep()
 
     '''
     function to shuffle the elements in array
@@ -199,8 +274,18 @@ class VisualSort:
             self.array[i].final = False
         
         # update the screen
-        self.draw()
+        if not self.unit_test:
+            self.draw()
 
+    '''
+    function to test if self.array is sorted (purely for debugging)
+    '''
+    def _is_sorted(self):
+        for i in range(self.size):
+            if self.array[i].val != i+1:
+                return False
+        return True
+    
     '''
     function to pause the program
     '''
@@ -277,26 +362,32 @@ class Element:
     def __lt__(self, other):
         return self.val < other.val
 
+    def __eq__(self, other):
+        return self.val == other.val
 
-# init, screen, title for pygame
-pygame.init()
-screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption('Sorting Visualisation')
 
-no_elem = 15
-my_time = 50
-x = VisualSort(no_elem, screen, my_time)
+if __name__ == '__main__':
+    # init, screen, title for pygame
+    pygame.init()
+    screen = pygame.display.set_mode((800, 600))
+    pygame.display.set_caption('Sorting Visualisation')
 
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYUP and event.key == pygame.K_1:
-            x.selection_sort()
-        elif event.type == pygame.KEYUP and event.key == pygame.K_2:
-            x.insertion_sort()
-        elif event.type == pygame.KEYUP and event.key == pygame.K_3:
-            x.quicksort()
-        elif event.type == pygame.KEYUP and event.key == pygame.K_0:
-            x.reset()
+    x = VisualSort(screen)
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYUP and event.key == pygame.K_1:
+                x.selection_sort()
+            elif event.type == pygame.KEYUP and event.key == pygame.K_2:
+                x.insertion_sort()
+            elif event.type == pygame.KEYUP and event.key == pygame.K_3:
+                x.quicksort()
+            elif event.type == pygame.KEYUP and event.key == pygame.K_4:
+                x.bubble_sort()
+            elif event.type == pygame.KEYUP and event.key == pygame.K_5:
+                x.merge_sort()
+            elif event.type == pygame.KEYUP and event.key == pygame.K_0:
+                x.reset()
