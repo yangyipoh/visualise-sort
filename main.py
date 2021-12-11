@@ -2,6 +2,10 @@ import pygame
 import math
 import random
 
+WINDOW_SIZE = (800, 600)
+NO_OF_ELEM = 15
+SPEED = 100
+
 '''
 VisualSort Class
 
@@ -207,6 +211,10 @@ class VisualSort:
     '''
     def merge_sort(self):
         self.merge_sort_aux(self.array, 0, self.size)
+        for i in range(self.size):
+            self.array[i].selected = False
+            self.array[i].final = True
+        
         if not self.unit_test:
             self.draw()
     
@@ -369,10 +377,10 @@ class Element:
 if __name__ == '__main__':
     # init, screen, title for pygame
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode(WINDOW_SIZE)
     pygame.display.set_caption('Sorting Visualisation')
 
-    x = VisualSort(screen)
+    x = VisualSort(screen, size=NO_OF_ELEM, speed=SPEED)
 
     running = True
     while running:
