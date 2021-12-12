@@ -15,39 +15,42 @@ This process took around 4 minutes to run so don't panic
 import unittest
 from main import VisualSort
 
+NO_OF_ELEM = 1000
+NO_OF_TEST = 500
+
 class TestSortingMethods(unittest.TestCase):
     def test_insertion_sort(self):
-        test_class = VisualSort(None, size=1000, unit_test=True)
-        for _ in range(500):
+        test_class = VisualSort(None, size=NO_OF_ELEM, unit_test=True)
+        for _ in range(NO_OF_TEST):
             test_class.reset()
             test_class.insertion_sort()
             self.assertTrue(test_class._is_sorted())
 
 
     def test_selection_sort(self):
-        test_class = VisualSort(None, size=1000, unit_test=True)
-        for _ in range(500):
+        test_class = VisualSort(None, size=NO_OF_ELEM, unit_test=True)
+        for _ in range(NO_OF_TEST):
             test_class.reset()
             test_class.selection_sort()
             self.assertTrue(test_class._is_sorted())
 
     def test_quicksort(self):
-        test_class = VisualSort(None, size=1000, unit_test=True)
-        for _ in range(500):
+        test_class = VisualSort(None, size=NO_OF_ELEM, unit_test=True)
+        for _ in range(NO_OF_TEST):
             test_class.reset()
             test_class.quicksort()
             self.assertTrue(test_class._is_sorted())
     
     def test_bubble_sort(self):
-        test_class = VisualSort(None, size=1000, unit_test=True)
-        for _ in range(500):
+        test_class = VisualSort(None, size=NO_OF_ELEM, unit_test=True)
+        for _ in range(NO_OF_TEST):
             test_class.reset()
             test_class.bubble_sort()
             self.assertTrue(test_class._is_sorted())
 
     def test_merge_sort(self):
-        test_class = VisualSort(None, size=1000, unit_test=True)
-        for _ in range(500):
+        test_class = VisualSort(None, size=NO_OF_ELEM, unit_test=True)
+        for _ in range(NO_OF_TEST):
             test_class.reset()
             test_class.merge_sort()
             self.assertTrue(test_class._is_sorted())
