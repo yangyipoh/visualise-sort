@@ -1,6 +1,7 @@
 import pygame
 import math
 import random
+import argparse
 
 WINDOW_SIZE = (800, 600)
 NO_OF_ELEM = 15
@@ -375,6 +376,16 @@ class Element:
 
 
 if __name__ == '__main__':
+    # parse arguments
+    parser = argparse.ArgumentParser(description='Change parameters for the program')
+    parser.add_argument('-elem', '--elements', metavar='', type=int, default=15, help='Number of elements to be sorted')
+    parser.add_argument('-spd', '--speed', metavar='', type=int, default=200, help='Speed of comparisons in milliseconds')
+
+    args = parser.parse_args()
+
+    NO_OF_ELEM = args.elements
+    SPEED = args.speed
+
     # init, screen, title for pygame
     pygame.init()
     screen = pygame.display.set_mode(WINDOW_SIZE)
@@ -385,7 +396,7 @@ if __name__ == '__main__':
     running = True
     while running:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE):
                 running = False
             elif event.type == pygame.KEYUP and event.key == pygame.K_1:
                 x.selection_sort()
@@ -397,5 +408,5 @@ if __name__ == '__main__':
                 x.bubble_sort()
             elif event.type == pygame.KEYUP and event.key == pygame.K_5:
                 x.merge_sort()
-            elif event.type == pygame.KEYUP and event.key == pygame.K_0:
+            elif event.type == pygame.KEYUP and event.key == pygame.K_r:
                 x.reset()

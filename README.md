@@ -1,28 +1,33 @@
 # Visualising Sorting Algorithm
 
-The following program is my implementation of visualising sorting algorithms. This was inspired my sorting algorithms seen in YouTube videos.
+The following program is my implementation of visualising sorting algorithms. This was inspired by sorting algorithms seen in YouTube videos.
 
 ## Demonstration
 ![demo](asset/demo.gif)
 
 ## Required libraries
-* python3
 * pygame 
 ```
 pip3 install pygame
 ```
 
-## Parameters
-Parameters that can be changed is at line 5-8
-![params](asset/param.png)
-Parameters | Description | Default value 
---- | --- | --- 
-WINDOW_SIZE | Size of the displayed window | (800, 600)
-NO_OF_ELEM | Number of elements to be sorted | 15
-SPEED | Speed of comparisons (in milliseconds) | 200
-
 ## Usage
-* To suffle the array, press the "0" key
+<p> To start the program, open the terminal in the folder and type </p>
+
+```
+python3 main.py
+```
+
+<p>This will run the program with the default number of elements (default = 15) and the default speed of comparisons (default = 200ms)</p>
+<p>To change the default parameters run the following command</p>
+
+```
+python3 main.py -elem 20 -spd 50
+```
+
+<p>This will run he program with 20 elements and the comparison speed would be 50ms</p>
+
+* To suffle the array, press the "r" key
 * To use selection sort, press the "1" key
 * To use insertion sort, press the "2" key
 * To use quick sort, press the "3" key
